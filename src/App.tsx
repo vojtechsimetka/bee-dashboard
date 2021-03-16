@@ -2,61 +2,20 @@ import React, { useEffect, useState, createContext } from 'react';
 import {BrowserRouter as Router} from 'react-router-dom';
 import './App.css';
 
-import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import Web3 from 'web3';
+
+import { lightTheme, darkTheme } from './theme';
 
 import BaseRouter from './routes/routes';
 
-
 declare global {
   interface Window {
-      ethereum: {};
-      web3: {};
+      ethereum: any;
+      web3: any;
   }
 }
-
-const lightTheme = createMuiTheme({
-  typography: {
-    fontFamily: [
-      'Montserrat',
-      'Nunito',
-      'Roboto',
-      '"Helvetica Neue"',
-      'Arial',
-      'sans-serif'
-    ].join(','),
-  }
-});
-
-const darkTheme = createMuiTheme({
-  palette: {
-    type: "dark",
-    background: {
-      default: '#0d1117', //'#111827',
-      paper: '#161b22', //'#1f2937',
-    },
-    primary: {
-      // light: will be calculated from palette.primary.main,
-      main: '#5e72e4' //'#3f51b5',
-      // dark: will be calculated from palette.primary.main,
-      // contrastText: will be calculated to contrast with palette.primary.main
-    },
-    secondary: {
-      main: '#1f2937',
-    },
-  },
-  typography: {
-    fontFamily: [
-      'Montserrat',
-      'Nunito',
-      'Roboto',
-      '"Helvetica Neue"',
-      'Arial',
-      'sans-serif'
-    ].join(','),
-  }
-});
 
 
 function App() {
@@ -64,9 +23,21 @@ function App() {
 
   const ThemeContext = createContext(themeMode);
 
-  useEffect(() => {
-    let theme = localStorage.getItem('theme')
+  const loadWeb3 = async () =>  {
+    if(typeof window.ethereum !== 'undefined') {
+      window.web3 = new Web3(window.ethereum)
+      await window.ethereum.enable()
+      window.ethereum.on('chainChanged', (_chainId: number) => window.location.reload());
+    } else {
+      console.log('Non ethereum supported browser detected. Consider installing metamask')
+    }
 
+  }
+
+  useEffect(() => {
+    loadWeb3()
+
+    let theme = localStorage.getItem('theme')
     if (theme) {
       toggleThemeMode(String(localStorage.getItem('theme')))
     } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -74,7 +45,6 @@ function App() {
     }
 
     const changeHandle = (e: any) => toggleThemeMode(e.matches ? "dark" : "light")
-
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', changeHandle);
 
     return () => window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', changeHandle)
