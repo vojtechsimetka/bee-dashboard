@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom';
-
+import { useTranslation } from 'react-i18next';
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
 import { Card, CardContent, Typography, Chip, Button } from '@material-ui/core/';
 import { CheckCircle, Error, ArrowRight, ArrowDropUp } from '@material-ui/icons/';
@@ -71,6 +71,7 @@ interface IProps{
 }
 
 function StatusCard(props: IProps) {
+    const { t } = useTranslation();
     const classes = useStyles();
 
     const [underlayAddressesVisible, setUnderlayAddresessVisible] = useState<Boolean>(false)
@@ -85,20 +86,20 @@ function StatusCard(props: IProps) {
                         { props.nodeHealth.status === 'ok' ? 
                             <div>
                                 <CheckCircle style={{color:'#32c48d', marginRight: '7px'}} />
-                                <span>Connected to Bee Node</span>
+                                <span>{t('page.status.card.titleOk')}</span>
                             </div>
                             : 
                             <div>
                                 <Error style={{color:'#c9201f', marginRight: '7px'}} />
-                                <span>Could not connect to Bee Node</span>
+                                <span>{t('page.status.card.titleErr')}</span>
                             </div> 
                         }
                         <Button variant='outlined' color='primary' size='small' style={{marginLeft:'12px'}} onClick={() => props.setStatusChecksVisible(true)}>View Status Checks</Button>
                     </Typography>
                     <div style={{marginBottom: '20px' }}>
-                        <span style={{marginRight:'20px'}}>Discovered Nodes: { props.nodeTopology.population }</span>
+                        <span style={{marginRight:'20px'}}>{t('page.status.card.discovered', { nodes: props.nodeTopology.population })}</span>
                         <span style={{marginRight:'20px'}}>
-                            <span>Connected Peers: </span>
+                            <span>{t('page.status.card.peers')}</span>
                             <Link to='/peers/'>
                             { props.nodeTopology.connected }
                             </Link>
@@ -107,33 +108,33 @@ function StatusCard(props: IProps) {
                     <div>
                         <Typography variant="subtitle2" gutterBottom>
                             <span>AGENT: </span>
-                            <a href='https://github.com/ethersphere/bee' rel='noreferrer' target='_blank'>Bee</a>
+                            <a href='https://github.com/ethersphere/bee' rel='noreferrer' target='_blank'>{t('common.bee')}</a>
                             <span>{props.nodeReadiness?.version ? ` v${props.nodeReadiness.version}` : '-'}</span>
                             {props.beeRelease && props.beeRelease.name === `v${props.nodeReadiness?.version?.split('-')[0]}` ?
                                 <Chip
                                 style={{ marginLeft: '7px', color: '#2145a0' }}
                                 size="small"
-                                label='latest'
+                                label={t('page.status.card.latest')}
                                 className={classes.status}
                                 />
                             :  
                                 props.loadingBeeRelease ?
                                 '' 
                                 :
-                                <a href='#'>update</a>
+                                <a href='#'>{t('page.status.card.update')}</a>
                             }
                         </Typography>
                         <Typography variant="subtitle2" gutterBottom>
-                            <span>PUBLIC KEY: </span>
+                            <span>{t('page.status.card.pubKey')}</span>
                             <span>{ props.nodeAddresses.public_key ? props.nodeAddresses.public_key : '-' }</span>
                         </Typography>
                         <Typography variant="subtitle2" gutterBottom>
-                            <span>PSS PUBLIC KEY: </span>
+                            <span>{t('page.status.card.pssPubKey')}</span>
                             <span>{ props.nodeAddresses.pss_public_key ? props.nodeAddresses.pss_public_key : '-' }</span>
                         </Typography>
                         <Typography variant="subtitle2" gutterBottom>
                                 <Typography style={{marginTop:'20px'}}>
-                                    <span>OVERLAY ADDRESS (PEER ID): </span>
+                                    <span>{t('page.status.card.overlayAddress')}</span>
                                     <span>{ props.nodeAddresses.overlay ? props.nodeAddresses.overlay : '-' }</span>
                                 </Typography>
                                 <Typography onClick={() => setUnderlayAddresessVisible(!underlayAddressesVisible)}>
@@ -142,7 +143,7 @@ function StatusCard(props: IProps) {
                                         <ArrowDropUp style={{fontSize:'12px'}} /> : 
                                         <ArrowRight style={{fontSize:'12px'}} />
                                         }
-                                        <span>Underlay Addresses</span>
+                                        <span>{t('page.status.card.underlayAddress')}</span>
                                     </Button>
                                 </Typography>
                                 {underlayAddressesVisible ?
