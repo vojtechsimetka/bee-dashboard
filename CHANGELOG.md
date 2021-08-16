@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.6.0](https://www.github.com/ethersphere/bee-dashboard/compare/v0.5.0...v0.6.0) (2021-08-16)
+
+
+### Features
+
+* add retry to accounting ([#166](https://www.github.com/ethersphere/bee-dashboard/issues/166)) ([a62243f](https://www.github.com/ethersphere/bee-dashboard/commit/a62243fe5c45b7dd9be6e92f82ebdf0b64bd8f0d))
+* add tooltips and health indicator to peers ([#169](https://www.github.com/ethersphere/bee-dashboard/issues/169)) ([480f6dc](https://www.github.com/ethersphere/bee-dashboard/commit/480f6dc7f9c58a4aae87e0dea7082a4bd3dc900b))
+* synchronized platform tabs ([#165](https://www.github.com/ethersphere/bee-dashboard/issues/165)) ([ec42eaf](https://www.github.com/ethersphere/bee-dashboard/commit/ec42eafc2b768ba06649f628c733e8d3440fdcaf))
+
+
+### Bug Fixes
+
+* enum index for supported platforms ([#170](https://www.github.com/ethersphere/bee-dashboard/issues/170)) ([dcec6e0](https://www.github.com/ethersphere/bee-dashboard/commit/dcec6e01887465c74a68feede52b476791bbefa7))
+
 ## [0.5.0](https://www.github.com/ethersphere/bee-dashboard/compare/v0.4.0...v0.5.0) (2021-08-09)
 
 
